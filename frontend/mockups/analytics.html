@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Growth Super Agent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #1A1A1A;
+            color: #F7F7F7;
+            line-height: 1.5;
+        }
+
+        .dashboard {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: #202020;
+            border-right: 1px solid #2A2A2A;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #2A2A2A;
+        }
+
+        .sidebar-header h1 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-header p {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .nav-menu {
+            padding: 16px;
+        }
+
+        .nav-item {
+            padding: 10px 12px;
+            margin-bottom: 4px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #F7F7F7;
+        }
+
+        .nav-item:hover {
+            background: #2A2A2A;
+        }
+
+        .nav-item.active {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .nav-icon {
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .header {
+            background: #202020;
+            border-bottom: 1px solid #2A2A2A;
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .date-range {
+            background: #2A2A2A;
+            border: 1px solid #3A3A3A;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: #F7F7F7;
+            cursor: pointer;
+        }
+
+        /* Content */
+        .content {
+            padding: 32px;
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .kpi-card {
+            background: #202020;
+            border: 1px solid #2A2A2A;
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .kpi-label {
+            font-size: 13px;
+            color: #888;
+            font-weight: 500;
+        }
+
+        .kpi-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .kpi-value {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .kpi-change {
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .kpi-change.positive {
+            color: #10B981;
+        }
+
+        .kpi-change.negative {
+            color: #EF4444;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: #202020;
+            border: 1px solid #2A2A2A;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 16px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* Simple Bar Chart */
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 200px;
+            padding: 16px 0;
+        }
+
+        .bar {
+            flex: 1;
+            background: linear-gradient(180deg, #3B82F6 0%, #2563EB 100%);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            min-height: 20px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 8px;
+        }
+
+        .bar-value {
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .bar-label {
+            text-align: center;
+            font-size: 11px;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        /* Performance Table */
+        .performance-table {
+            background: #202020;
+            border: 1px solid #2A2A2A;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .table-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #2A2A2A;
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #252525;
+        }
+
+        th {
+            padding: 12px 24px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        th.number {
+            text-align: right;
+        }
+
+        td {
+            padding: 16px 24px;
+            border-top: 1px solid #2A2A2A;
+            font-size: 14px;
+        }
+
+        td.number {
+            text-align: right;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-linkedin {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3B82F6;
+        }
+
+        .badge-twitter {
+            background: rgba(96, 165, 250, 0.2);
+            color: #60A5FA;
+        }
+
+        .badge-blog {
+            background: rgba(168, 85, 247, 0.2);
+            color: #A855F7;
+        }
+
+        .score-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .score-badge.high {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+        }
+
+        .score-badge.medium {
+            background: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+        }
+
+        /* Grid Layout */
+        .two-col-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-top: 12px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 6px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #2A2A2A;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3B82F6 0%, #60A5FA 100%);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        /* Insight Card */
+        .insight-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .insight-icon {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .insight-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .insight-text {
+            font-size: 13px;
+            color: #AAA;
+            line-height: 1.6;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: #AAA;
+            border: 1px solid #2A2A2A;
+        }
+
+        .btn-ghost:hover {
+            background: #2A2A2A;
+            color: #F7F7F7;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Growth Super Agent</h1>
+                <p>AI Marketing Engine</p>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashboard-calendar.html" class="nav-item">
+                    <span class="nav-icon">📅</span>
+                    <span>Calendar</span>
+                </a>
+                <a href="approval-workflow.html" class="nav-item">
+                    <span class="nav-icon">✓</span>
+                    <span>Approval</span>
+                </a>
+                <a href="distribution.html" class="nav-item">
+                    <span class="nav-icon">📤</span>
+                    <span>Distribution</span>
+                </a>
+                <a href="analytics.html" class="nav-item active">
+                    <span class="nav-icon">📊</span>
+                    <span>Analytics</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div>
+                    <h2>Analytics & Insights</h2>
+                    <p>Track performance and learn what works</p>
+                </div>
+                <div class="header-controls">
+                    <select class="date-range">
+                        <option>Last 7 days</option>
+                        <option selected>Last 30 days</option>
+                        <option>Last 90 days</option>
+                        <option>All time</option>
+                    </select>
+                    <button class="btn btn-ghost">📥 Export Report</button>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- KPIs -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div>
+                                <div class="kpi-label">Total Impressions</div>
+                            </div>
+                            <div class="kpi-icon">👁️</div>
+                        </div>
+                        <div class="kpi-value">24.3k</div>
+                        <div class="kpi-change positive">
+                            ↑ 32% vs last period
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div>
+                                <div class="kpi-label">Engagement Rate</div>
+                            </div>
+                            <div class="kpi-icon">💬</div>
+                        </div>
+                        <div class="kpi-value">8.2%</div>
+                        <div class="kpi-change positive">
+                            ↑ 2.1% vs last period
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div>
+                                <div class="kpi-label">Avg ICP Score</div>
+                            </div>
+                            <div class="kpi-icon">🎯</div>
+                        </div>
+                        <div class="kpi-value">89</div>
+                        <div class="kpi-change positive">
+                            ↑ 4 points vs last period
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div>
+                                <div class="kpi-label">Voice Match Quality</div>
+                            </div>
+                            <div class="kpi-icon">🎤</div>
+                        </div>
+                        <div class="kpi-value">93%</div>
+                        <div class="kpi-change positive">
+                            ↑ 7% vs last period
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Insight -->
+                <div class="insight-card">
+                    <div class="insight-icon">💡</div>
+                    <div class="insight-title">AI Learning Insight</div>
+                    <div class="insight-text">
+                        Your highest-performing content (ICP 90+) has 3.2x more engagement than average.
+                        The AI is learning: shorter posts (under 200 words) with specific numbers perform best.
+                        Posts about PLG and onboarding resonate strongest with your audience.
+                    </div>
+                </div>
+
+                <!-- Charts Grid -->
+                <div class="two-col-grid">
+                    <!-- Content Performance Over Time -->
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Weekly Performance</h3>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <div class="legend-dot" style="background: #3B82F6;"></div>
+                                    <span>Posts Published</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bar-chart">
+                            <div style="flex-direction: column; flex: 1;">
+                                <div class="bar" style="height: 45%;">
+                                    <span class="bar-value">9</span>
+                                </div>
+                                <div class="bar-label">Week 1</div>
+                            </div>
+                            <div style="flex-direction: column; flex: 1;">
+                                <div class="bar" style="height: 65%;">
+                                    <span class="bar-value">13</span>
+                                </div>
+                                <div class="bar-label">Week 2</div>
+                            </div>
+                            <div style="flex-direction: column; flex: 1;">
+                                <div class="bar" style="height: 80%;">
+                                    <span class="bar-value">16</span>
+                                </div>
+                                <div class="bar-label">Week 3</div>
+                            </div>
+                            <div style="flex-direction: column; flex: 1;">
+                                <div class="bar" style="height: 100%;">
+                                    <span class="bar-value">20</span>
+                                </div>
+                                <div class="bar-label">Week 4</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Platform Distribution -->
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Platform Performance</h3>
+                        </div>
+                        <div style="padding: 16px 0;">
+                            <div style="margin-bottom: 20px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="font-size: 13px; font-weight: 500;">LinkedIn</span>
+                                    <span style="font-size: 13px; color: #888;">15.2k impressions</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 62%;"></div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="font-size: 13px; font-weight: 500;">Twitter</span>
+                                    <span style="font-size: 13px; color: #888;">6.8k impressions</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 28%; background: linear-gradient(90deg, #60A5FA 0%, #93C5FD 100%);"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="font-size: 13px; font-weight: 500;">Blog</span>
+                                    <span style="font-size: 13px; color: #888;">2.3k impressions</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 10%; background: linear-gradient(90deg, #A855F7 0%, #C084FC 100%);"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Performing Content -->
+                <div class="performance-table">
+                    <div class="table-header">
+                        <h3 class="table-title">Top Performing Content (Last 30 Days)</h3>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Content</th>
+                                <th>Platform</th>
+                                <th>ICP Score</th>
+                                <th class="number">Impressions</th>
+                                <th class="number">Engagement</th>
+                                <th class="number">Engagement Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 500;">I spent $300k on ads before learning this...</div>
+                                    <div style="font-size: 12px; color: #888; margin-top: 4px;">Feb 17 • Voice Match: 95%</div>
+                                </td>
+                                <td>
+                                    <span class="badge badge-linkedin">LinkedIn</span>
+                                </td>
+                                <td>
+                                    <span class="score-badge high">95</span>
+                                </td>
+                                <td class="number">3,247</td>
+                                <td class="number">312</td>
+                                <td class="number" style="color: #10B981;">9.6%</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 500;">Three ways to kill your onboarding experience</div>
+                                    <div style="font-size: 12px; color: #888; margin-top: 4px;">Feb 16 • Voice Match: 92%</div>
+                                </td>
+                                <td>
+                                    <span class="badge badge-twitter">Twitter</span>
+                                </td>
+                                <td>
+                                    <span class="score-badge high">87</span>
+                                </td>
+                                <td class="number">1,842</td>
+                                <td class="number">156</td>
+                                <td class="number" style="color: #10B981;">8.5%</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 500;">The real cost of bad onboarding</div>
+                                    <div style="font-size: 12px; color: #888; margin-top: 4px;">Feb 15 • Voice Match: 94%</div>
+                                </td>
+                                <td>
+                                    <span class="badge badge-blog">Blog</span>
+                                </td>
+                                <td>
+                                    <span class="score-badge high">92</span>
+                                </td>
+                                <td class="number">842</td>
+                                <td class="number">67</td>
+                                <td class="number" style="color: #10B981;">8.0%</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 500;">Why most SaaS companies get pricing wrong</div>
+                                    <div style="font-size: 12px; color: #888; margin-top: 4px;">Feb 14 • Voice Match: 88%</div>
+                                </td>
+                                <td>
+                                    <span class="badge badge-linkedin">LinkedIn</span>
+                                </td>
+                                <td>
+                                    <span class="score-badge medium">84</span>
+                                </td>
+                                <td class="number">2,156</td>
+                                <td class="number">145</td>
+                                <td class="number" style="color: #10B981;">6.7%</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 500;">The PLG playbook nobody talks about</div>
+                                    <div style="font-size: 12px; color: #888; margin-top: 4px;">Feb 13 • Voice Match: 96%</div>
+                                </td>
+                                <td>
+                                    <span class="badge badge-linkedin">LinkedIn</span>
+                                </td>
+                                <td>
+                                    <span class="score-badge high">91</span>
+                                </td>
+                                <td class="number">2,934</td>
+                                <td class="number">189</td>
+                                <td class="number" style="color: #10B981;">6.4%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Learning Insights -->
+                <div class="two-col-grid">
+                    <!-- Voice Quality Trends -->
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Voice Match Quality Trend</h3>
+                        </div>
+                        <div class="bar-chart">
+                            <div style="flex-direction: column; flex: 1;">
+                                <div class="bar" style="height: 70%; background: linear-gradient(180deg, #10B981 0%, #059669 100%);">
+                                    <span class="bar-value">86%</span>
+                                </div>
+                                <div class="bar-label">Week 1</div>
+                            </div>
+                            <div style="flex-direction: column; flex: 1;">
+                                <div class="bar" style="height: 82%; background: linear-gradient(180deg, #10B981 0%, #059669 100%);">
+                                    <span class="bar-value">89%</span>
+                                </div>
+                                <div class="bar-label">Week 2</div>
+                            </div>
+                            <div style="flex-direction: column; flex: 1;">
+                                <div class="bar" style="height: 90%; background: linear-gradient(180deg, #10B981 0%, #059669 100%);">
+                                    <span class="bar-value">91%</span>
+                                </div>
+                                <div class="bar-label">Week 3</div>
+                            </div>
+                            <div style="flex-direction: column; flex: 1;">
+                                <div class="bar" style="height: 100%; background: linear-gradient(180deg, #10B981 0%, #059669 100%);">
+                                    <span class="bar-value">93%</span>
+                                </div>
+                                <div class="bar-label">Week 4</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(16, 185, 129, 0.1); border-radius: 8px;">
+                            <div style="font-size: 12px; color: #10B981;">
+                                ✓ AI is learning: +7% voice match improvement over 30 days
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ICP Score Distribution -->
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">ICP Score Distribution</h3>
+                        </div>
+                        <div style="padding: 16px 0;">
+                            <div style="margin-bottom: 20px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="font-size: 13px; font-weight: 500;">90-100 (Excellent)</span>
+                                    <span style="font-size: 13px; color: #10B981;">45% of content</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 45%; background: linear-gradient(90deg, #10B981 0%, #059669 100%);"></div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="font-size: 13px; font-weight: 500;">80-89 (Good)</span>
+                                    <span style="font-size: 13px; color: #3B82F6;">38% of content</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 38%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="font-size: 13px; font-weight: 500;">Below 80 (Needs Work)</span>
+                                    <span style="font-size: 13px; color: #F59E0B;">17% of content</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 17%; background: linear-gradient(90deg, #F59E0B 0%, #D97706 100%);"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(59, 130, 246, 0.1); border-radius: 8px;">
+                            <div style="font-size: 12px; color: #3B82F6;">
+                                💡 83% of your content scores 80+, well above industry average
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
