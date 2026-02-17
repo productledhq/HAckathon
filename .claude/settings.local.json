@@ -7,7 +7,10 @@
       "Bash(taskkill:*)",
       "Bash(PORT=3010 npm run start:*)",
       "Bash(test:*)",
-      "Bash(del:*)"
+      "Bash(del:*)",
+      "Bash(git commit:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)"
     ]
   }
 }
