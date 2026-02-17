@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Growth Super Agent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #1A1A1A;
+            color: #F7F7F7;
+            line-height: 1.5;
+        }
+
+        .dashboard {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: #202020;
+            border-right: 1px solid #2A2A2A;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #2A2A2A;
+        }
+
+        .sidebar-header h1 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-header p {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .nav-menu {
+            padding: 16px;
+        }
+
+        .nav-item {
+            padding: 10px 12px;
+            margin-bottom: 4px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-item:hover {
+            background: #2A2A2A;
+        }
+
+        .nav-item.active {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .nav-icon {
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .header {
+            background: #202020;
+            border-bottom: 1px solid #2A2A2A;
+            padding: 24px 32px;
+        }
+
+        .header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .content-area {
+            padding: 32px;
+            max-width: 1200px;
+        }
+
+        /* Settings Sections */
+        .settings-section {
+            background: #202020;
+            border: 1px solid #2A2A2A;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .settings-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .settings-section-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .settings-section-subtitle {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .setting-item {
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #2A2A2A;
+        }
+
+        .setting-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .setting-label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .setting-description {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            background: #1A1A1A;
+            border: 1px solid #2A2A2A;
+            border-radius: 6px;
+            padding: 12px;
+            color: #F7F7F7;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-textarea {
+            min-height: 200px;
+            resize: vertical;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #3B82F6;
+        }
+
+        /* Toggle Switch */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toggle {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background: #2A2A2A;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .toggle.active {
+            background: #3B82F6;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .toggle.active .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563EB;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid #2A2A2A;
+            color: #F7F7F7;
+        }
+
+        .btn-secondary:hover {
+            background: #2A2A2A;
+        }
+
+        .btn-danger {
+            background: #EF4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #DC2626;
+        }
+
+        /* Model Selection */
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .model-option {
+            padding: 16px;
+            border: 2px solid #2A2A2A;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .model-option:hover {
+            border-color: #3B82F6;
+        }
+
+        .model-option.selected {
+            border-color: #3B82F6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .model-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .model-description {
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* File Upload */
+        .file-upload {
+            border: 2px dashed #2A2A2A;
+            border-radius: 6px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .file-upload:hover {
+            border-color: #3B82F6;
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .file-upload-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .file-upload-text {
+            font-size: 14px;
+            color: #888;
+        }
+
+        /* Slider */
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .slider {
+            flex: 1;
+            height: 6px;
+            background: #2A2A2A;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #3B82F6;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: #3B82F6;
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+        }
+
+        .slider-value {
+            font-size: 14px;
+            font-weight: 600;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22C55E;
+        }
+
+        .badge-warning {
+            background: rgba(234, 179, 8, 0.2);
+            color: #EAB308;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 13px;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        /* File List */
+        .file-list {
+            background: #1A1A1A;
+            border: 1px solid #2A2A2A;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .file-list-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            border-bottom: 1px solid #2A2A2A;
+            transition: background 0.2s;
+        }
+
+        .file-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .file-list-item:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .file-icon {
+            font-size: 24px;
+            min-width: 32px;
+            text-align: center;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .file-meta {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .btn-icon:hover {
+            background: #2A2A2A;
+        }
+
+        .file-upload-area {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: #1A1A1A;
+            border: 1px solid #2A2A2A;
+            border-radius: 6px;
+            margin-top: 12px;
+        }
+
+        .upload-stats {
+            display: flex;
+            gap: 32px;
+            padding: 16px;
+            background: #1A1A1A;
+            border: 1px solid #2A2A2A;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .upload-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .upload-stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #3B82F6;
+        }
+
+        .upload-stat-label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Editor Modal */
+        .editor-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .editor-modal.active {
+            display: flex;
+        }
+
+        .editor-modal-content {
+            background: #202020;
+            border: 1px solid #2A2A2A;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #2A2A2A;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .editor-modal-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .editor-modal-close {
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .editor-modal-close:hover {
+            color: #F7F7F7;
+        }
+
+        .editor-modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .editor-modal-textarea {
+            width: 100%;
+            min-height: 500px;
+            background: #1A1A1A;
+            border: 1px solid #2A2A2A;
+            border-radius: 6px;
+            padding: 16px;
+            color: #F7F7F7;
+            font-size: 13px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            line-height: 1.6;
+            resize: vertical;
+        }
+
+        .editor-modal-textarea:focus {
+            outline: none;
+            border-color: #3B82F6;
+        }
+
+        .editor-modal-footer {
+            padding: 20px 24px;
+            border-top: 1px solid #2A2A2A;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .editor-modal-meta {
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Growth Super Agent</h1>
+                <p>ProductLed</p>
+            </div>
+
+            <nav class="nav-menu">
+                <div class="nav-item">
+                    <span class="nav-icon">📊</span>
+                    Dashboard
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📋</span>
+                    Approval Workflow
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📤</span>
+                    Distribution
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📈</span>
+                    Analytics
+                </div>
+                <div class="nav-item active">
+                    <span class="nav-icon">⚙️</span>
+                    Settings
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="header">
+                <h2>AI Processing Settings</h2>
+                <p>Configure how the AI processes and transforms your content</p>
+            </div>
+
+            <div class="content-area">
+                <!-- 1. Content Ingestion & Analysis -->
+                <div class="settings-section">
+                    <div class="settings-section-header">
+                        <div>
+                            <div class="settings-section-title">1. Content Ingestion & Analysis</div>
+                        </div>
+                        <span class="badge badge-success">Active</span>
+                    </div>
+                    <div class="settings-section-subtitle">Configure how content is analyzed and processed from input sources</div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">Input Sources</div>
+                        <div class="setting-description">Select which sources to monitor for new content</div>
+                        <div class="toggle-container">
+                            <div class="toggle active"><div class="toggle-slider"></div></div>
+                            <span>Riverside (Podcast recordings)</span>
+                        </div>
+                        <div class="toggle-container" style="margin-top: 12px;">
+                            <div class="toggle active"><div class="toggle-slider"></div></div>
+                            <span>Manual uploads (Book chapters, content ideas)</span>
+                        </div>
+                        <div class="toggle-container" style="margin-top: 12px;">
+                            <div class="toggle active"><div class="toggle-slider"></div></div>
+                            <span>Notion (Content ideas, scheduling tags)</span>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">Auto-Processing</div>
+                        <div class="setting-description">Automatically process new content as it arrives</div>
+                        <div class="toggle-container">
+                            <div class="toggle active"><div class="toggle-slider"></div></div>
+                            <span>Enable auto-processing</span>
+                        </div>
+                        <div class="info-box">
+                            When enabled, new content will be automatically analyzed and sent to the AI repurposing engine. You'll review it in the approval workflow.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. AI Repurposing Engine -->
+                <div class="settings-section">
+                    <div class="settings-section-header">
+                        <div>
+                            <div class="settings-section-title">2. AI Repurposing Engine</div>
+                        </div>
+                        <span class="badge badge-success">Active</span>
+                    </div>
+                    <div class="settings-section-subtitle">Select AI model and configure content transformation settings</div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">AI Model Selection</div>
+                        <div class="setting-description">Choose which AI model to use for content generation</div>
+                        <div class="model-grid">
+                            <div class="model-option selected">
+                                <div class="model-name">Claude Sonnet 4.5</div>
+                                <div class="model-description">Best for nuanced writing, voice matching (Recommended)</div>
+                            </div>
+                            <div class="model-option">
+                                <div class="model-name">GPT-4</div>
+                                <div class="model-description">Alternative option, good for structured content</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">Content Formats</div>
+                        <div class="setting-description">Select which formats to generate from source content</div>
+                        <div class="toggle-container">
+                            <div class="toggle active"><div class="toggle-slider"></div></div>
+                            <span>LinkedIn Posts</span>
+                        </div>
+                        <div class="toggle-container" style="margin-top: 12px;">
+                            <div class="toggle active"><div class="toggle-slider"></div></div>
+                            <span>Newsletter Content</span>
+                        </div>
+                        <div class="toggle-container" style="margin-top: 12px;">
+                            <div class="toggle active"><div class="toggle-slider"></div></div>
+                            <span>Blog Posts</span>
+                        </div>
+                        <div class="toggle-container" style="margin-top: 12px;">
+                            <div class="toggle"><div class="toggle-slider"></div></div>
+                            <span>Twitter Threads</span>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">Temperature / Creativity</div>
+                        <div class="setting-description">Control how creative vs. predictable the AI output is</div>
+                        <div class="slider-container">
+                            <input type="range" min="0" max="100" value="30" class="slider" id="temperature">
+                            <span class="slider-value">0.3</span>
+                        </div>
+                        <div class="info-box">
+                            Lower values (0.0-0.3) = More focused and deterministic<br>
+                            Higher values (0.7-1.0) = More creative and varied
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Voice & Style Adaptation Layer -->
+                <div class="settings-section">
+                    <div class="settings-section-header">
+                        <div>
+                            <div class="settings-section-title">3. Voice & Style Adaptation Layer</div>
+                        </div>
+                        <span class="badge badge-success">Configured</span>
+                    </div>
+                    <div class="settings-section-subtitle">Train the AI to match your unique writing voice</div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">Voice Guide Files</div>
+                        <div class="setting-description">Manage your writing style guides and voice documentation</div>
+
+                        <!-- File List -->
+                        <div class="file-list">
+                            <div class="file-list-item">
+                                <div class="file-icon">📄</div>
+                                <div class="file-info">
+                                    <div class="file-name">writing-voice-guide.md</div>
+                                    <div class="file-meta">241 lines • Last edited 2 hours ago</div>
+                                </div>
+                                <div class="file-actions">
+                                    <button class="btn-icon" title="Edit">✏️</button>
+                                    <button class="btn-icon" title="Download">⬇️</button>
+                                    <button class="btn-icon" title="Delete">🗑️</button>
+                                </div>
+                            </div>
+
+                            <div class="file-list-item">
+                                <div class="file-icon">📄</div>
+                                <div class="file-info">
+                                    <div class="file-name">ai-slop-detector.md</div>
+                                    <div class="file-meta">188 lines • Last edited 3 days ago</div>
+                                </div>
+                                <div class="file-actions">
+                                    <button class="btn-icon" title="Edit">✏️</button>
+                                    <button class="btn-icon" title="Download">⬇️</button>
+                                    <button class="btn-icon" title="Delete">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="file-upload-area">
+                            <input type="file" id="voiceGuideUpload" style="display: none;" accept=".md,.txt,.pdf">
+                            <button class="btn btn-secondary" onclick="document.getElementById('voiceGuideUpload').click()">
+                                + Upload Voice Guide
+                            </button>
+                            <span style="font-size: 12px; color: #666; margin-left: 12px;">
+                                or <a href="#" style="color: #3B82F6;" id="createNewGuide">create new</a>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">Example Content Library</div>
+                        <div class="setting-description">Upload sample content in your voice for AI training (5-10 examples recommended)</div>
+
+                        <div class="file-list">
+                            <div class="file-list-item">
+                                <div class="file-icon">📝</div>
+                                <div class="file-info">
+                                    <div class="file-name">linkedin-post-slack-case-study.md</div>
+                                    <div class="file-meta">Platform: LinkedIn • ICP Score: 94</div>
+                                </div>
+                                <div class="file-actions">
+                                    <button class="btn-icon" title="View">👁️</button>
+                                    <button class="btn-icon" title="Delete">🗑️</button>
+                                </div>
+                            </div>
+
+                            <div class="file-list-item">
+                                <div class="file-icon">📧</div>
+                                <div class="file-info">
+                                    <div class="file-name">newsletter-5-minute-rule.md</div>
+                                    <div class="file-meta">Platform: Newsletter • ICP Score: 89</div>
+                                </div>
+                                <div class="file-actions">
+                                    <button class="btn-icon" title="View">👁️</button>
+                                    <button class="btn-icon" title="Delete">🗑️</button>
+                                </div>
+                            </div>
+
+                            <div class="file-list-item">
+                                <div class="file-icon">📄</div>
+                                <div class="file-info">
+                                    <div class="file-name">Free-Product-Led-Playbook.pdf</div>
+                                    <div class="file-meta">4,885 lines • Book chapter</div>
+                                </div>
+                                <div class="file-actions">
+                                    <button class="btn-icon" title="View">👁️</button>
+                                    <button class="btn-icon" title="Delete">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="upload-stats">
+                            <div class="upload-stat">
+                                <span class="upload-stat-value">3</span>
+                                <span class="upload-stat-label">files uploaded</span>
+                            </div>
+                            <div class="upload-stat">
+                                <span class="upload-stat-value">7</span>
+                                <span class="upload-stat-label">more recommended</span>
+                            </div>
+                        </div>
+
+                        <div class="file-upload-area">
+                            <input type="file" id="exampleContentUpload" style="display: none;" accept=".md,.txt,.pdf" multiple>
+                            <button class="btn btn-secondary" onclick="document.getElementById('exampleContentUpload').click()">
+                                + Upload Example Content
+                            </button>
+                            <span style="font-size: 12px; color: #666; margin-left: 12px;">
+                                .md, .txt, .pdf (max 10MB each)
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">System Instructions</div>
+                        <div class="setting-description">Custom instructions for how the AI should process and transform content</div>
+                        <textarea class="form-textarea" id="systemInstructions" style="min-height: 150px; font-family: 'Monaco', monospace; font-size: 13px;" placeholder="Add custom instructions for the AI...">You are a writing assistant helping Wes Bush transform podcast content into high-quality, on-brand content for multiple platforms.
+
+CRITICAL RULES:
+- Match Wes's voice exactly using the writing-voice-guide.md
+- Detect and eliminate ALL AI slop patterns using ai-slop-detector.md
+- Score all content for ICP fit (target: PLG founders at B2B SaaS companies)
+- Flag content below 75 ICP score for review
+- Track all edits to improve future outputs
+
+When transforming content:
+1. Extract the core insight or story
+2. Write in short, punchy paragraphs (1-3 sentences)
+3. Include specific numbers and examples
+4. Use Wes's signature phrases naturally
+5. Never use generic AI language</textarea>
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary">Reset to Default</button>
+                            <button class="btn btn-primary">Save Instructions</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. AI Detection & Quality Check -->
+                <div class="settings-section">
+                    <div class="settings-section-header">
+                        <div>
+                            <div class="settings-section-title">4. AI Detection & Quality Check</div>
+                        </div>
+                        <span class="badge badge-success">Active</span>
+                    </div>
+                    <div class="settings-section-subtitle">Configure quality thresholds and detection rules</div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">Minimum ICP Score</div>
+                        <div class="setting-description">Content below this score will be flagged for review</div>
+                        <div class="slider-container">
+                            <input type="range" min="0" max="100" value="75" class="slider" id="icpThreshold">
+                            <span class="slider-value">75</span>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">ICP Target Audience</div>
+                        <div class="setting-description">Define your ideal customer profile for content scoring</div>
+                        <textarea class="form-textarea" id="icpDefinition" style="min-height: 120px;" placeholder="Describe your target audience...">PLG founders and operators at B2B SaaS companies ($1M-$50M ARR) who are:
+- Building product-led growth motions
+- Struggling with low activation rates
+- Want to reduce customer acquisition costs
+- Value self-serve onboarding</textarea>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">AI Slop Detection</div>
+                        <div class="setting-description">Automatically detect and flag generic AI patterns</div>
+                        <div class="toggle-container">
+                            <div class="toggle active"><div class="toggle-slider"></div></div>
+                            <span>Detect series-of-three constructions</span>
+                        </div>
+                        <div class="toggle-container" style="margin-top: 12px;">
+                            <div class="toggle active"><div class="toggle-slider"></div></div>
+                            <span>Flag red flag words (delve, robust, etc.)</span>
+                        </div>
+                        <div class="toggle-container" style="margin-top: 12px;">
+                            <div class="toggle active"><div class="toggle-slider"></div></div>
+                            <span>Check for excessive em dash usage</span>
+                        </div>
+                        <div class="toggle-container" style="margin-top: 12px;">
+                            <div class="toggle active"><div class="toggle-slider"></div></div>
+                            <span>Detect hedge stacking patterns</span>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">Auto-Reject Threshold</div>
+                        <div class="setting-description">Automatically reject content with severe quality issues</div>
+                        <div class="toggle-container">
+                            <div class="toggle"><div class="toggle-slider"></div></div>
+                            <span>Enable auto-reject (Use with caution)</span>
+                        </div>
+                        <div class="info-box">
+                            When enabled, content with ICP score below 40 or 5+ voice issues will be auto-rejected.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Learning & Improvement Module -->
+                <div class="settings-section">
+                    <div class="settings-section-header">
+                        <div>
+                            <div class="settings-section-title">5. Learning & Improvement Module</div>
+                        </div>
+                        <span class="badge badge-success">Active</span>
+                    </div>
+                    <div class="settings-section-subtitle">Configure how the AI learns from your edits and feedback</div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">Edit Tracking</div>
+                        <div class="setting-description">Track all edits to improve future content generation</div>
+                        <div class="toggle-container">
+                            <div class="toggle active"><div class="toggle-slider"></div></div>
+                            <span>Enable edit tracking</span>
+                        </div>
+                        <div class="info-box">
+                            The AI analyzes your edits to understand your preferences and improve future outputs.
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">Learning Frequency</div>
+                        <div class="setting-description">How often the AI should update its understanding of your voice</div>
+                        <select class="form-select">
+                            <option>After every 5 edits</option>
+                            <option selected>After every 10 edits (Recommended)</option>
+                            <option>After every 25 edits</option>
+                            <option>Weekly</option>
+                            <option>Monthly</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">Feedback Loop</div>
+                        <div class="setting-description">Get weekly insights about what the AI is learning</div>
+                        <div class="toggle-container">
+                            <div class="toggle active"><div class="toggle-slider"></div></div>
+                            <span>Send weekly learning reports</span>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">Reset Learning</div>
+                        <div class="setting-description">Start fresh if the AI has learned incorrect patterns</div>
+                        <button class="btn btn-danger">Reset All Learning Data</button>
+                        <div class="info-box" style="margin-top: 12px;">
+                            ⚠️ This will clear all learned preferences and start fresh. Use only if content quality has degraded.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Save All Settings -->
+                <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 32px;">
+                    <button class="btn btn-secondary">Cancel Changes</button>
+                    <button class="btn btn-primary">Save All Settings</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- File Editor Modal -->
+    <div class="editor-modal" id="fileEditorModal">
+        <div class="editor-modal-content">
+            <div class="editor-modal-header">
+                <div class="editor-modal-title" id="editorModalTitle">Edit writing-voice-guide.md</div>
+                <button class="editor-modal-close" id="closeEditorModal">&times;</button>
+            </div>
+            <div class="editor-modal-body">
+                <textarea class="editor-modal-textarea" id="fileEditorTextarea" placeholder="Start typing...">## Wes Bush Voice Guide
+
+### Core Principles
+- Short paragraphs (1-3 sentences)
+- Active voice, one idea per sentence
+- Include specific numbers: "$5M ARR with 3 employees"
+- Direct, conversational tone
+- Stories beat generic advice
+
+### AI Slop Rules (NEVER USE)
+- Series-of-three: "no X, no Y, no Z"
+- Red flag words: delve, utilize, robust, synergy, paradigm
+- Announcing before starting: "Here's the truth:" or "Let me unpack this"
+- Empty motivational closes: "By embracing these principles..."
+
+### Signature Phrases (USE THESE)
+- "Sound familiar?"
+- "Let's get to work."
+- "That's because..."
+- "There is no world in which..."
+- "I pretend that every user says a simple prayer..."
+
+### Examples of Good vs Bad
+
+❌ BAD: "In this post, I'll delve into the robust ecosystem of product-led growth strategies that can transform your business paradigm."
+
+✅ GOOD: "I spent $300,000 on a whitepaper. The results? Terrible. Here's what I learned."
+
+### Formatting Rules
+- Max one exclamation mark per piece
+- Em dashes: max one per paragraph
+- Questions: use them to engage, not to announce
+- Numbers: always specific, never vague
+
+### Platform-Specific Adjustments
+
+**LinkedIn Posts:**
+- Hook in first line
+- Visual breaks every 2-3 lines
+- End with engagement prompt or story payoff
+
+**Newsletter:**
+- Conversational opening
+- Clear sections with headers
+- Call to action that feels natural
+
+**Blog Posts:**
+- Longer form, but same voice
+- More detailed examples
+- Still conversational, never academic</textarea>
+            </div>
+            <div class="editor-modal-footer">
+                <div class="editor-modal-meta">
+                    <span id="lineCount">241 lines</span> •
+                    <span id="charCount">3,521 characters</span>
+                </div>
+                <div class="action-buttons" style="margin: 0;">
+                    <button class="btn btn-secondary" id="cancelFileEdit">Cancel</button>
+                    <button class="btn btn-primary" id="saveFileEdit">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== File Editor Modal =====
+        const fileEditorModal = document.getElementById('fileEditorModal');
+        const closeEditorModal = document.getElementById('closeEditorModal');
+        const cancelFileEdit = document.getElementById('cancelFileEdit');
+        const saveFileEdit = document.getElementById('saveFileEdit');
+        const fileEditorTextarea = document.getElementById('fileEditorTextarea');
+        const editorModalTitle = document.getElementById('editorModalTitle');
+        const lineCount = document.getElementById('lineCount');
+        const charCount = document.getElementById('charCount');
+
+        function openFileEditor(filename, content) {
+            editorModalTitle.textContent = `Edit ${filename}`;
+            fileEditorTextarea.value = content || '';
+            updateEditorStats();
+            fileEditorModal.classList.add('active');
+        }
+
+        function closeFileEditor() {
+            fileEditorModal.classList.remove('active');
+        }
+
+        function updateEditorStats() {
+            const text = fileEditorTextarea.value;
+            const lines = text.split('\n').length;
+            const chars = text.length;
+            lineCount.textContent = `${lines} lines`;
+            charCount.textContent = `${chars.toLocaleString()} characters`;
+        }
+
+        closeEditorModal.addEventListener('click', closeFileEditor);
+        cancelFileEdit.addEventListener('click', closeFileEditor);
+
+        saveFileEdit.addEventListener('click', function() {
+            alert('File saved! ✅\n\nChanges have been saved to the voice guide.\nThe AI will use this updated version for all future content generation.');
+            closeFileEditor();
+        });
+
+        fileEditorTextarea.addEventListener('input', updateEditorStats);
+
+        // Click outside to close
+        fileEditorModal.addEventListener('click', function(e) {
+            if (e.target === fileEditorModal) {
+                closeFileEditor();
+            }
+        });
+
+        // ===== File Actions =====
+        document.querySelectorAll('.btn-icon').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const action = this.getAttribute('title');
+                const fileItem = this.closest('.file-list-item');
+                const filename = fileItem.querySelector('.file-name').textContent;
+
+                if (action === 'Edit') {
+                    // Open editor with sample content
+                    const sampleContent = fileEditorTextarea.value;
+                    openFileEditor(filename, sampleContent);
+                } else if (action === 'Delete') {
+                    if (confirm(`Are you sure you want to delete "${filename}"?\n\nThis cannot be undone.`)) {
+                        alert(`File "${filename}" deleted.`);
+                        fileItem.remove();
+                    }
+                } else if (action === 'Download') {
+                    alert(`Downloading ${filename}...\n\nIn the full app, this would download the file to your computer.`);
+                } else if (action === 'View') {
+                    openFileEditor(filename, '# Sample Content\n\nThis is sample content from your uploaded file...');
+                }
+            });
+        });
+
+        // ===== File Upload =====
+        document.getElementById('voiceGuideUpload').addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                alert(`Uploading ${files[0].name}...\n\nFile will be added to your voice guide library.`);
+            }
+        });
+
+        document.getElementById('exampleContentUpload').addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                const fileNames = Array.from(files).map(f => f.name).join(', ');
+                alert(`Uploading ${files.length} file(s):\n${fileNames}\n\nThe AI will analyze these examples to improve voice matching.`);
+            }
+        });
+
+        // Create new guide
+        document.getElementById('createNewGuide').addEventListener('click', function(e) {
+            e.preventDefault();
+            openFileEditor('new-voice-guide.md', '# New Voice Guide\n\nStart writing your voice guide here...');
+        });
+
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const icon = this.querySelector('.nav-icon').textContent;
+                if (icon === '📊') window.location.href = 'dashboard-calendar.html';
+            });
+        });
+
+        // Toggle switches
+        document.querySelectorAll('.toggle').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+
+        // Model selection
+        document.querySelectorAll('.model-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.model-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Sliders
+        document.getElementById('temperature').addEventListener('input', function() {
+            const value = (this.value / 100).toFixed(1);
+            this.nextElementSibling.textContent = value;
+        });
+
+        document.getElementById('icpThreshold').addEventListener('input', function() {
+            this.nextElementSibling.textContent = this.value;
+        });
+
+        // File upload
+        document.querySelector('.file-upload').addEventListener('click', function() {
+            alert('File upload dialog would open here.\n\nIn the full app, you could:\n• Upload sample content in your voice\n• Upload writing guides\n• Upload transcripts from podcasts');
+        });
+
+        // Save buttons
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.textContent.includes('Save')) {
+                    alert('Settings saved! ✅\n\nThe AI will now:\n• Use your updated voice guide\n• Apply new quality thresholds\n• Adjust learning parameters\n• Update content generation');
+                }
+            });
+        });
+
+        // Reset button
+        document.querySelector('.btn-danger').addEventListener('click', function() {
+            if (confirm('⚠️ Are you sure you want to reset all learning data?\n\nThis will:\n• Clear all learned voice patterns\n• Remove edit history\n• Start fresh with only your voice guide\n\nThis cannot be undone.')) {
+                alert('Learning data reset! The AI will start fresh from your voice guide.');
+            }
+        });
+    </script>
+</body>
+</html>

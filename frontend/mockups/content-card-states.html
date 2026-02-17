@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Card States - Design Reference</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #1A1A1A;
+            color: #F7F7F7;
+            line-height: 1.5;
+            padding: 48px 24px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 48px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #888;
+        }
+
+        .section {
+            margin-bottom: 64px;
+        }
+
+        .section-header {
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2A2A2A;
+        }
+
+        .section-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .section-header p {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Content Cards */
+        .content-card {
+            background: #202020;
+            border: 1px solid #2A2A2A;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .content-card:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        .card-header {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .card-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 8px;
+        }
+
+        .card-title-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-meta {
+            font-size: 11px;
+            color: #888;
+        }
+
+        .icp-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .icp-high {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22C55E;
+        }
+
+        .icp-medium {
+            background: rgba(234, 179, 8, 0.2);
+            color: #EAB308;
+        }
+
+        .icp-low {
+            background: rgba(239, 68, 68, 0.2);
+            color: #EF4444;
+        }
+
+        .status-badge {
+            font-size: 11px;
+            padding: 4px 8px;
+        }
+
+        .status-draft {
+            background: rgba(107, 114, 128, 0.2);
+            color: #9CA3AF;
+        }
+
+        .status-progress {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60A5FA;
+        }
+
+        .status-pending {
+            background: rgba(234, 179, 8, 0.2);
+            color: #EAB308;
+        }
+
+        .status-approved {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22C55E;
+        }
+
+        .status-scheduled {
+            background: rgba(168, 85, 247, 0.2);
+            color: #A855F7;
+        }
+
+        .status-published {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22C55E;
+        }
+
+        .status-rejected {
+            background: rgba(239, 68, 68, 0.2);
+            color: #EF4444;
+        }
+
+        .card-body {
+            padding: 0 12px 12px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .card-preview {
+            font-size: 11px;
+            color: #888;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .voice-issues {
+            background: rgba(234, 179, 8, 0.1);
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 11px;
+        }
+
+        .voice-issues-title {
+            color: #EAB308;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .voice-issues-critical {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .voice-issues-critical .voice-issues-title {
+            color: #EF4444;
+        }
+
+        .voice-issues-text {
+            color: #888;
+        }
+
+        .rejection-reason {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 3px solid #EF4444;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 11px;
+        }
+
+        .rejection-title {
+            color: #EF4444;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .rejection-text {
+            color: #AAA;
+        }
+
+        .card-actions {
+            margin-top: 8px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563EB;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #F7F7F7;
+            border: 1px solid #2A2A2A;
+        }
+
+        .btn-outline:hover {
+            background: #2A2A2A;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        .date-info {
+            font-size: 11px;
+            color: #888;
+            text-align: center;
+        }
+
+        /* Color Swatches */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .color-swatch {
+            background: #202020;
+            border: 1px solid #2A2A2A;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .color-box {
+            height: 80px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .color-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .color-hex {
+            font-size: 12px;
+            color: #888;
+            font-family: monospace;
+        }
+
+        .color-usage {
+            font-size: 11px;
+            color: #AAA;
+            margin-top: 8px;
+        }
+
+        /* Badge Examples */
+        .badge-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .label {
+            font-size: 13px;
+            color: #888;
+            min-width: 120px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Content Card States</h1>
+            <p>Design reference for all content card variations and states</p>
+        </div>
+
+        <!-- Content Card States -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Content Card States</h2>
+                <p>Different workflow states showing appropriate badges and actions</p>
+            </div>
+
+            <div class="grid">
+                <!-- Draft -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <div class="card-title-row">
+                            <div class="card-title-content">
+                                <div class="card-title">Draft Content Example</div>
+                                <div class="card-meta">📝 Episode 47</div>
+                            </div>
+                            <span class="icp-badge icp-medium">72</span>
+                        </div>
+                        <span class="badge status-badge status-draft">Idea</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-preview">Content is in draft state. Not yet started or being worked on...</p>
+                        <div class="voice-issues">
+                            <div class="voice-issues-title">Voice Issues:</div>
+                            <div class="voice-issues-text">Incomplete - needs more sections</div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-outline">Start Editing →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- In Progress -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <div class="card-title-row">
+                            <div class="card-title-content">
+                                <div class="card-title">In Progress Content</div>
+                                <div class="card-meta">💼 Episode 46</div>
+                            </div>
+                            <span class="icp-badge icp-medium">78</span>
+                        </div>
+                        <span class="badge status-badge status-progress">In Progress</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-preview">Content is actively being edited or refined by the creator...</p>
+                        <div class="card-actions">
+                            <button class="btn btn-primary">Ready for Review →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Review -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <div class="card-title-row">
+                            <div class="card-title-content">
+                                <div class="card-title">Pending Review</div>
+                                <div class="card-meta">📧 Episode 45</div>
+                            </div>
+                            <span class="icp-badge icp-high">88</span>
+                        </div>
+                        <span class="badge status-badge status-pending">Ready for Review</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-preview">Content is ready and waiting for approval from reviewer...</p>
+                        <div class="card-actions">
+                            <div class="btn-group">
+                                <button class="btn btn-outline">← Edit</button>
+                                <button class="btn btn-primary">Approve</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Approved -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <div class="card-title-row">
+                            <div class="card-title-content">
+                                <div class="card-title">Approved Content</div>
+                                <div class="card-meta">💼 Episode 47</div>
+                            </div>
+                            <span class="icp-badge icp-high">92</span>
+                        </div>
+                        <span class="badge status-badge status-approved">Approved</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-preview">Content has been approved and is ready to be scheduled...</p>
+                        <div class="card-actions">
+                            <button class="btn btn-primary">Schedule →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scheduled -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <div class="card-title-row">
+                            <div class="card-title-content">
+                                <div class="card-title">Scheduled Content</div>
+                                <div class="card-meta">💼 Episode 46</div>
+                            </div>
+                            <span class="icp-badge icp-high">95</span>
+                        </div>
+                        <span class="badge status-badge status-scheduled">Scheduled</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-preview">Content is scheduled for publishing at a specific date and time...</p>
+                        <div class="card-actions">
+                            <div class="date-info">📅 Feb 18, 2026 at 9:00 AM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Published -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <div class="card-title-row">
+                            <div class="card-title-content">
+                                <div class="card-title">Published Content</div>
+                                <div class="card-meta">💼 Episode 45</div>
+                            </div>
+                            <span class="icp-badge icp-high">94</span>
+                        </div>
+                        <span class="badge status-badge status-published">Published</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-preview">Content has been successfully published to the platform...</p>
+                        <div class="card-actions">
+                            <div class="date-info" style="color: #22C55E;">✓ Feb 12, 2026 at 2:00 PM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rejected -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <div class="card-title-row">
+                            <div class="card-title-content">
+                                <div class="card-title">Rejected Content</div>
+                                <div class="card-meta">📧 Episode 45</div>
+                            </div>
+                            <span class="icp-badge icp-low">23</span>
+                        </div>
+                        <span class="badge status-badge status-rejected">Rejected</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-preview">Content was rejected during review and needs major revisions...</p>
+                        <div class="rejection-reason">
+                            <div class="rejection-title">Rejection Reason:</div>
+                            <div class="rejection-text">This reads like a generic AI wrote it. Doesn't sound like Wes at all.</div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-primary">Rewrite</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Critical Voice Issues -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <div class="card-title-row">
+                            <div class="card-title-content">
+                                <div class="card-title">Critical Voice Issues</div>
+                                <div class="card-meta">📝 Episode 46</div>
+                            </div>
+                            <span class="icp-badge icp-low">28</span>
+                        </div>
+                        <span class="badge status-badge status-draft">Idea</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-preview">In today's competitive landscape, B2B SaaS companies need to leverage strategic frameworks...</p>
+                        <div class="voice-issues voice-issues-critical">
+                            <div class="voice-issues-title">⚠️ Critical Voice Issues:</div>
+                            <div class="voice-issues-text">REWRITE ENTIRELY - doesn't sound like Wes. Remove red flag words: leverage, robust, multifaceted.</div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-primary">Fix Voice</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ICP Score Badges -->
+        <div class="section">
+            <div class="section-header">
+                <h2>ICP Score Badges</h2>
+                <p>Color-coded badges indicating content quality and voice match</p>
+            </div>
+
+            <div class="badge-showcase">
+                <span class="label">High (85+):</span>
+                <span class="icp-badge icp-high">92</span>
+                <span class="icp-badge icp-high">88</span>
+                <span class="icp-badge icp-high">95</span>
+                <span class="icp-badge icp-high">94</span>
+            </div>
+
+            <div class="badge-showcase">
+                <span class="label">Medium (60-84):</span>
+                <span class="icp-badge icp-medium">78</span>
+                <span class="icp-badge icp-medium">72</span>
+                <span class="icp-badge icp-medium">65</span>
+            </div>
+
+            <div class="badge-showcase">
+                <span class="label">Low (< 60):</span>
+                <span class="icp-badge icp-low">45</span>
+                <span class="icp-badge icp-low">28</span>
+                <span class="icp-badge icp-low">23</span>
+            </div>
+        </div>
+
+        <!-- Status Badges -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Status Badges</h2>
+                <p>Workflow status indicators</p>
+            </div>
+
+            <div class="badge-showcase">
+                <span class="label">Workflow:</span>
+                <span class="badge status-badge status-draft">Idea</span>
+                <span class="badge status-badge status-progress">In Progress</span>
+                <span class="badge status-badge status-pending">Ready for Review</span>
+                <span class="badge status-badge status-approved">Approved</span>
+                <span class="badge status-badge status-scheduled">Scheduled</span>
+                <span class="badge status-badge status-published">Published</span>
+                <span class="badge status-badge status-rejected">Rejected</span>
+            </div>
+        </div>
+
+        <!-- Color Palette -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Color Palette</h2>
+                <p>Core design system colors</p>
+            </div>
+
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #1A1A1A;"></div>
+                    <div class="color-name">Background</div>
+                    <div class="color-hex">#1A1A1A</div>
+                    <div class="color-usage">Main background color</div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #202020;"></div>
+                    <div class="color-name">Card Background</div>
+                    <div class="color-hex">#202020</div>
+                    <div class="color-usage">Cards, sidebar</div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #2A2A2A;"></div>
+                    <div class="color-name">Border</div>
+                    <div class="color-hex">#2A2A2A</div>
+                    <div class="color-usage">Borders, dividers</div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #F7F7F7;"></div>
+                    <div class="color-name">Foreground</div>
+                    <div class="color-hex">#F7F7F7</div>
+                    <div class="color-usage">Primary text</div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #888888;"></div>
+                    <div class="color-name">Muted</div>
+                    <div class="color-hex">#888888</div>
+                    <div class="color-usage">Secondary text, metadata</div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #3B82F6;"></div>
+                    <div class="color-name">Primary</div>
+                    <div class="color-hex">#3B82F6</div>
+                    <div class="color-usage">Primary actions, links</div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #22C55E;"></div>
+                    <div class="color-name">Success</div>
+                    <div class="color-hex">#22C55E</div>
+                    <div class="color-usage">Approved, published, high ICP</div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #EAB308;"></div>
+                    <div class="color-name">Warning</div>
+                    <div class="color-hex">#EAB308</div>
+                    <div class="color-usage">Pending, voice issues, medium ICP</div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #EF4444;"></div>
+                    <div class="color-name">Danger</div>
+                    <div class="color-hex">#EF4444</div>
+                    <div class="color-usage">Rejected, critical issues, low ICP</div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #60A5FA;"></div>
+                    <div class="color-name">Info</div>
+                    <div class="color-hex">#60A5FA</div>
+                    <div class="color-usage">In progress status</div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #A855F7;"></div>
+                    <div class="color-name">Scheduled</div>
+                    <div class="color-hex">#A855F7</div>
+                    <div class="color-usage">Scheduled status</div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #9CA3AF;"></div>
+                    <div class="color-name">Draft</div>
+                    <div class="color-hex">#9CA3AF</div>
+                    <div class="color-usage">Draft status</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growth Super Agent - Design & Mockups</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1A1A1A 0%, #0F0F0F 100%);
+            color: #F7F7F7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 24px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, #3B82F6 0%, #60A5FA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: 20px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            font-size: 16px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .card {
+            background: #202020;
+            border: 1px solid #2A2A2A;
+            border-radius: 12px;
+            padding: 32px;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #3B82F6;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: #AAA;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 4px 10px;
+            background: #2A2A2A;
+            border-radius: 6px;
+            font-size: 11px;
+            color: #888;
+        }
+
+        .featured {
+            border-color: #3B82F6;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+        }
+
+        .featured .card-title::after {
+            content: " ⭐";
+        }
+
+        .footer {
+            text-align: center;
+            padding-top: 48px;
+            border-top: 1px solid #2A2A2A;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .footer-link {
+            color: #3B82F6;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: #60A5FA;
+        }
+
+        .footer-text {
+            font-size: 13px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo {
+                font-size: 36px;
+            }
+
+            .tagline {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">Growth Super Agent</h1>
+            <p class="tagline">Design System & UI Mockups</p>
+            <p class="description">
+                Explore the complete design system, UI components, and interactive mockups
+                for ProductLed's AI-powered marketing automation tool.
+            </p>
+        </header>
+
+        <div class="grid">
+            <!-- Design System -->
+            <a href="design-system.html" class="card featured">
+                <div class="card-icon">🎨</div>
+                <h2 class="card-title">Design System</h2>
+                <p class="card-description">
+                    Complete design system documentation with colors, typography, spacing,
+                    components, and design principles. Includes fixed sidebar navigation
+                    for easy browsing.
+                </p>
+                <div class="card-meta">
+                    <span class="tag">Foundation</span>
+                    <span class="tag">Components</span>
+                    <span class="tag">Principles</span>
+                </div>
+            </a>
+
+            <!-- Kanban Board -->
+            <a href="dashboard-kanban.html" class="card">
+                <div class="card-icon">📋</div>
+                <h2 class="card-title">Kanban Board</h2>
+                <p class="card-description">
+                    Three-column workflow (To-do, In progress, Complete) showing content
+                    cards with ICP scores, status badges, and quick actions. The main
+                    workflow view.
+                </p>
+                <div class="card-meta">
+                    <span class="tag">Workflow</span>
+                    <span class="tag">Interactive</span>
+                    <span class="tag">Primary View</span>
+                </div>
+            </a>
+
+            <!-- List View -->
+            <a href="dashboard-list.html" class="card">
+                <div class="card-icon">📝</div>
+                <h2 class="card-title">List View</h2>
+                <p class="card-description">
+                    Alternative vertical list layout with expanded content previews,
+                    detailed voice issues, and prominent action buttons. Better for
+                    detailed review.
+                </p>
+                <div class="card-meta">
+                    <span class="tag">Alternative View</span>
+                    <span class="tag">Detailed</span>
+                </div>
+            </a>
+
+            <!-- Content States -->
+            <a href="content-card-states.html" class="card">
+                <div class="card-icon">🔧</div>
+                <h2 class="card-title">Content Card States</h2>
+                <p class="card-description">
+                    Comprehensive showcase of all content states (Draft, In Progress,
+                    Pending, Approved, Scheduled, Published, Rejected) and component
+                    variations.
+                </p>
+                <div class="card-meta">
+                    <span class="tag">Reference</span>
+                    <span class="tag">All States</span>
+                </div>
+            </a>
+
+            <!-- Calendar Dashboard -->
+            <a href="dashboard-calendar.html" class="card featured">
+                <div class="card-icon">📅</div>
+                <h2 class="card-title">Calendar Dashboard</h2>
+                <p class="card-description">
+                    Interactive calendar-focused dashboard with drag-and-drop scheduling,
+                    content editor, voice input, and upcoming content view. Full 4-function
+                    workflow: Input → Process → Approve → Distribute.
+                </p>
+                <div class="card-meta">
+                    <span class="tag">Main Dashboard</span>
+                    <span class="tag">Interactive</span>
+                    <span class="tag">Drag & Drop</span>
+                </div>
+            </a>
+
+            <!-- Settings -->
+            <a href="settings.html" class="card featured">
+                <div class="card-icon">⚙️</div>
+                <h2 class="card-title">AI Processing Settings</h2>
+                <p class="card-description">
+                    Configure all 5 components of the Processing Engine: Content Ingestion,
+                    AI Repurposing, Voice Adaptation, Quality Check, and Learning Module.
+                    Train the AI to match your voice.
+                </p>
+                <div class="card-meta">
+                    <span class="tag">AI Training</span>
+                    <span class="tag">Configuration</span>
+                    <span class="tag">Voice Settings</span>
+                </div>
+            </a>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="http://localhost:3001" class="footer-link" target="_blank">
+                    Live React App →
+                </a>
+                <a href="http://localhost:3001/design-system" class="footer-link" target="_blank">
+                    React Design System →
+                </a>
+                <a href="http://localhost:3001/dashboard" class="footer-link" target="_blank">
+                    React Dashboard →
+                </a>
+            </div>
+            <p class="footer-text">
+                Built for ProductLed • Design System v1.0 • February 2026
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
